@@ -1,0 +1,51 @@
+# credit to chatgpt for this please i hope that it doesnt destroy the repo
+# Ignore CLion specific files
+.idea/
+
+# Ignore CMake build directory
+build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+Makefile
+CMakeScripts/
+Testing/
+CTestTestfile.cmake
+install_manifest.txt
+_compile_commands.json
+
+# Ignore compiled binaries and libraries
+*.out
+*.o
+*.obj
+*.so
+*.dll
+*.dylib
+*.a
+*.lib
+*.exe
+
+# Ignore generated logs and crash reports
+*.log
+*.stackdump
+
+# Ignore user-specific files
+.vscode/
+*.iml
+*.swp
+*.swo
+
+# Ignore package manager files
+conanbuildinfo.*
+conan.lock
+
+# Ignore temporary files
+*.tmp
+*.cache
+*.bak
+*.pid
+*.seed
+
+# Ignore core dumps
+core.*
+*.core
