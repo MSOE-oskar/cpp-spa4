@@ -6,15 +6,22 @@
 #define ROOM_H
 
 #include "RoomEntity.h"
+#include "Weapon.h"
+#include "Enemy.h"
+#include "Chest.h"
 
 class Room {
 public:
     // my idea is that if a room is set too nullptr that means there's no room there.
     // we can check by just saying something like
     // if(room.northRoom == nullPtr) display there's no room.
-    Room(RoomEntity entity, Room* n = nullptr, Room* e = nullptr, Room* s = nullptr, Room* w = nullptr);
-    Room *northRoom, *eastRoom, *southRoom, *westRoom;
-    RoomEntity *entity;
+    Room(Weapon *w, Enemy *e, Chest *c);
+    Room *northRoom = nullptr, *eastRoom = nullptr, *southRoom = nullptr, *westRoom = nullptr;
+
+    // things that can be in the room; nullptr means nothing is there
+    Weapon *weapon = nullptr;
+    Enemy *enemy = nullptr;
+    Chest *chest = nullptr;
 };
 
 
