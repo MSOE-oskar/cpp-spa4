@@ -10,8 +10,11 @@
 class Enemy : public RoomEntity {
 public:
     Enemy(std::string name, std::string description, std::string hint, int health, int damage, int coinsOnDeath) {
-        //name can be rats or spiders
-        //RoomEntity::hint = hint;
+
+        this->name = name;
+        this->description = description;
+        this->hint = hint;
+
         this->health = health;
         this->damage = damage;
         this->coinsOnDeath = coinsOnDeath;
@@ -30,6 +33,7 @@ public:
         if (damage >= health) {
             return true;
         }
+        health -= damage;
         return false;
     };
 private:
