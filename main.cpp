@@ -14,15 +14,17 @@ Weapon weapons[2] = {
     Weapon("Sword", "Crafted with iron from the depths of the forbidden caves", 40),
 };
 
-Chest chests[2] = {
 
-};
 Enemy enemies[4] = {
     Enemy("Rats", "A crowd of hungry rats appeared", "sounds of scurrying around", 45, 10,5),
     Enemy("Rats", "A crowd of hungry rats appeared", "sounds of scurrying around", 45, 10,5),
     Enemy("Spider", "A giant spider has found you ", "sounds of soft footsteps and scraping", 100, 20,20),
     Enemy("Spider", "A giant spider has found you ", "sounds of soft footsteps and scraping", 100, 20,20)
 
+};
+Chest chests[2] = {
+    Chest(NORMAL, &weapons[0], nullptr, "Bling sounds of chest",  50),
+    Chest(TRAPPED, nullptr, &enemies[0], "Buzz sounds of chest", 0)
 };
 //
 // coords: y  x

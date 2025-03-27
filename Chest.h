@@ -18,11 +18,16 @@ class Chest : public RoomEntity {
 public:
     // Probably based on the chest type, you set the name, description, and hint.
     Chest(ChestType type, Weapon *containedWeapon, Enemy *containedEnemy, std::string hint, int coins) {
+        this->name = "Trap Chest";
+        this->description = "A golden chest";
+        this->hint = hint;
+
         if (type == NORMAL) {
             //normal behavior
             this->containedWeapon = containedWeapon;
             this->containedEnemy = nullptr;
             this->coins = coins;
+
         } else {
             //trap behavior
             this->containedEnemy = containedEnemy;
