@@ -27,11 +27,15 @@ public:
     Weapon *weapon;
     Enemy *enemy;
     Chest *chest;
-    std::string description = "An empty room.\n";
+    std::string description = "An empty room.";
 
     void displayRoom() const {
         // room description.
-        std::cout << description;
+        std::string rtn = description;
+        if (northRoom != nullptr) rtn += northRoom->getRoomHint() + "\n";
+        if (eastRoom != nullptr) rtn += eastRoom->getRoomHint() + "\n";
+        if (southRoom != nullptr) rtn += southRoom->getRoomHint() + "\n";
+        if (westRoom != nullptr) rtn += westRoom->getRoomHint() + "\n";
     }
 
     void displayOptions() const {
@@ -57,6 +61,14 @@ public:
         if (chest != nullptr) rtn += "c";
 
         return rtn;
+    }
+
+    // since there are multiple things that can give a hint,
+    // but only one thing per room,
+    // this makes it so we only have to call one function.
+    std::string getRoomHint() const {
+        if (this->chest != nullptr) return chest->getHint();
+        if (this->enemy != nullptr) return enemy->getHint();
     }
 };
 
