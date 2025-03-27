@@ -9,7 +9,11 @@
 
 void setupRooms();
 Room* performAction(char input);
-// Weapon weapons[2] = {};
+Weapon weapons[2] = {
+    Weapon("Stick", "A small piece of a tree, with a small carved top, does very little damage", 10),
+    Weapon("Sword", "Crafted with iron from the depths of the forbidden caves", 40),
+};
+
 Chest chests[2] = {
 
 };

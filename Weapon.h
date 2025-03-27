@@ -9,7 +9,11 @@
 
 class Weapon : public RoomEntity {
 public:
-    Weapon(std::string name, std::string description, int damage);
+    Weapon(std::string name, std::string description, int damage) {
+        this->damage = damage;
+        this->name = name;
+        this->description = description;
+    }
     int getDamage();
 private:
     int damage;
