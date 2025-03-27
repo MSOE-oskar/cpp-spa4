@@ -230,7 +230,20 @@ void fightEnemyInCurrentRoom()
 };
 void openChestInCurrentRoom()
 {
-    // TODO
+    std::cout << "You opened a "<< currentRoom->chest->getName();
+    if (currentRoom->chest->type == TRAPPED) {
+        //removes trap chest
+        currentRoom->chest = nullptr;
+        //assigns first rat as enemy in room
+        currentRoom->enemy = &enemies[0];
+
+    } else {
+        //remove normal chest
+        currentRoom->chest = nullptr;
+        //adds weapon to room
+        currentRoom->weapon = &weapons[1];
+        //do I have to do something with gold
+    }
 };
 
 
