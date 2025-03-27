@@ -27,15 +27,19 @@ public:
     Weapon *weapon;
     Enemy *enemy;
     Chest *chest;
-    std::string description = "An empty room.";
+    std::string description = "An empty room.\n";
 
     void displayRoom() const {
         // room description.
         std::string rtn = description;
-        if (northRoom != nullptr) rtn += northRoom->getRoomHint() + "\n";
-        if (eastRoom != nullptr) rtn += eastRoom->getRoomHint() + "\n";
-        if (southRoom != nullptr) rtn += southRoom->getRoomHint() + "\n";
-        if (westRoom != nullptr) rtn += westRoom->getRoomHint() + "\n";
+        if (northRoom != nullptr) rtn += northRoom->getRoomHint("north");
+        if (eastRoom != nullptr) rtn += eastRoom->getRoomHint("east");
+        if (southRoom != nullptr) rtn += southRoom->getRoomHint("south");
+        if (westRoom != nullptr) rtn += westRoom->getRoomHint("west");
+        if (weapon != nullptr) rtn += "There is a(n) " + weapon->getName() + "in the room\n";
+        if (enemy != nullptr) rtn += enemy->getDescription() + "\n";
+        if (chest != nullptr) rtn += "There is a chest in the room. \n";
+        std::cout << rtn;
     }
 
     void displayOptions() const {
@@ -66,9 +70,12 @@ public:
     // since there are multiple things that can give a hint,
     // but only one thing per room,
     // this makes it so we only have to call one function.
-    std::string getRoomHint() const {
-        if (this->chest != nullptr) return chest->getHint();
-        if (this->enemy != nullptr) return enemy->getHint();
+    std::string getRoomHint(std::string direction) const {
+        if (this->chest != nullptr) return "You hear " + chest->getHint() + " to your " + direction + "\n";
+        if (this->enemy != nullptr) return "You hear " + enemy->getHint() + " to your " + direction + "\n";
+        // no hint
+        return "";
+
     }
 };
 
