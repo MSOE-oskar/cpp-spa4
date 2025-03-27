@@ -223,7 +223,6 @@ void pickupItemInCurrentRoom()
     player->addWeapon(currentRoom->weapon);
     std :: cout << "Picked up " << currentRoom -> weapon->getName() << ".\n";
     currentRoom->weapon = nullptr;
-    ;
 };
 void fightEnemyInCurrentRoom()
 {
