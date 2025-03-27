@@ -47,8 +47,7 @@ int main()
                  "||         88YbdP88  dP__Yb   dP   88''       88'Yb  Y8   8P 88 Y88 88 Y88 88''   88'Yb \n"
                  "||         88 YY 88 dP''''Yb d8888 888888     88  Yb `YbodP' 88  Y8 88  Y8 888888 88  Yb\n"
                  "||==================================================================================================\n"
-                 "|| Looks like you need some help. \n"
-                 "|| Don't worry, your only goal is to escape the maze. \n"
+                 "|| Looks like you need some help. Don't worry, your only goal is to escape the maze. \n"
                  "|| You can move by clicking corresponding letter on keyboard E)ast, S)outh, N)orth, W)est. \n"
                  "|| In the maze there are a few dangers you need to be aware of. \n"
                  "|| The maze is littered with GIANT spiders that want to eat you, \n"
@@ -90,6 +89,8 @@ int main()
 
 // assign items to rooms randomly, for the start of the game
 void setupRooms() {
+    //
+    // FIRST ROW
     // 0, 0
     rooms[0][0].eastRoom = &rooms[0][1];
     // 0, 1
@@ -103,7 +104,8 @@ void setupRooms() {
     // 0, 4
     rooms[0][4].westRoom = &rooms[0][3];
     rooms[0][4].southRoom = &rooms[1][4];
-
+    //
+    // SECOND ROW
     // 1, 0
     rooms[1][0].southRoom = &rooms[2][0];
     rooms[1][0].eastRoom = &rooms[1][1];
@@ -120,7 +122,8 @@ void setupRooms() {
     rooms[1][4].northRoom = &rooms[0][4];
     rooms[1][4].southRoom = &rooms[2][4];
     rooms[1][4].westRoom = &rooms[1][3];
-
+    //
+    // THIRD ROW
     // 2, 0
     rooms[2][0].northRoom = &rooms[1][0];
     // 2, 1
@@ -138,7 +141,8 @@ void setupRooms() {
     rooms[2][4].northRoom = &rooms[1][4];
     rooms[2][4].southRoom = &rooms[3][4];
     rooms[2][4].westRoom = &rooms[2][3];
-
+    //
+    // FOURTH ROW
     // 3, 0
     rooms[3][0].eastRoom = &rooms[3][1];
     rooms[3][0].southRoom = &rooms[4][0];
@@ -153,7 +157,8 @@ void setupRooms() {
     // 3, 4
     rooms[3][4].northRoom = &rooms[2][4];
     rooms[3][4].southRoom = &rooms[4][4];
-
+    //
+    // FIFTH ROW
     // 4, 0
     rooms[4][0].northRoom = &rooms[3][0];
     rooms[4][0].eastRoom = &rooms[4][1];
@@ -198,7 +203,7 @@ Room* performAction(char input) {
                 break;
     }
 
-    // if we pickup weapon, fight enemy, or open chest, we stay in current room.
+    // if we pick up weapon, fight enemy, or open chest, we stay in current room.
     return currentRoom;
 }
 
