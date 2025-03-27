@@ -15,7 +15,6 @@ public:
     std::string getDescription();
     std::string getHint();
 private:
-
     std::string hint = "";
     std::string name = "";
     std::string description = "";

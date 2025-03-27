@@ -5,7 +5,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "Weapon.h";
+#include "Weapon.h"
 
 enum PlayerState
 {
