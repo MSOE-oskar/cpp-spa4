@@ -14,7 +14,11 @@ public:
         this->name = name;
         this->description = description;
     }
-    int getDamage();
+
+    int getDamage() {
+        return damage;
+    }
+
 private:
     int damage;
 };

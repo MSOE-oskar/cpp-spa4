@@ -11,9 +11,15 @@
 
 class RoomEntity {
 public:
-    std::string getName();
-    std::string getDescription();
-    std::string getHint();
+    std::string getName() {
+        return name;
+    };
+    std::string getDescription() {
+        return description;
+    };
+    std::string getHint() {
+        return hint;
+    };
 protected:
     std::string hint = "";
     std::string name = "";
