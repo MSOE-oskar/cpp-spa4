@@ -22,8 +22,8 @@ Weapon weapons[2] = {
 
 Enemy enemies[5] = {
     Enemy("Rats", "A crowd of hungry rats appeared", "sounds of scurrying around", 45, 10,5),
-    Enemy("Rats", "A crowd of hungry rats appeared", "sounds of scurrying around", 45, 10,5),
-    Enemy("Rats", "A crowd of hungry rats appeared", "sounds of scurrying around", 45, 10,5),
+    Enemy("Racoon", "A demon of the night a racoon is here", "sounds of tiny paws around", 45, 10,5),
+    Enemy("Possum", "A possum will help you play dead", "sounds of a tail whipping around", 45, 10,5),
     Enemy("Spider", "A giant spider has found you ", "sounds of soft footsteps and scraping", 100, 20,20),
     Enemy("Spider", "A giant spider has found you ", "sounds of soft footsteps and scraping", 100, 20,20)
 
@@ -68,6 +68,8 @@ int main()
                  "|| If you encounter one you must fight them with a weapon or else succumb to their attacks. \n"
                  "|| If a weapon is near you there will be an option to P)ick it up. \n"
                  "|| Crowds of rats are another danger you can hear them scurrying around. \n"
+                 "|| A racoon might appear you can hear their tiny paws. \n"
+                 "|| A possum can also show up but its tail whipping gives it away. \n"
                  "|| They won't kill you right away, but they will cause you to lose health. \n"
                  "|| There are chests in the maze that can give you gold (bling sound) \n"
                  "|| but be careful a chest can also be a trap chest (buzz sound) that will spawn in a crowd of rats. \n"
