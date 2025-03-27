@@ -243,6 +243,7 @@ void openChestInCurrentRoom()
         //adds weapon to room
         currentRoom->weapon = &weapons[1];
         //do I have to do something with gold
+        player->setCoins(player->getCoins() + currentRoom->chest->getCoins());
     }
 };
 
