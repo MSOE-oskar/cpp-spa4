@@ -57,10 +57,10 @@ int main()
 
 
     std::cout << "||==================================================================================================\n"
-                 "||         8b    d8    db    8888P 888888     88''Yb 88   88 88b 88 88b 88 888888 88''Yb\n"
-                 "||         88b  d88   dPYb     dP  88__       88__dP 88   88 88Yb88 88Yb88 88__   88__dP\n"
-                 "||         88YbdP88  dP__Yb   dP   88''       88'Yb  Y8   8P 88 Y88 88 Y88 88''   88'Yb \n"
-                 "||         88 YY 88 dP''''Yb d8888 888888     88  Yb `YbodP' 88  Y8 88  Y8 888888 88  Yb\n"
+                 "||         8b    d8    db    8888P 888888     88''Yb 88   88 88b 88 88b 88 888888 88''Yb            \n"
+                 "||         88b  d88   dPYb     dP  88__       88__dP 88   88 88Yb88 88Yb88 88__   88__dP            \n"
+                 "||         88YbdP88  dP__Yb   dP   88''       88'Yb  Y8   8P 88 Y88 88 Y88 88''   88'Yb             \n"
+                 "||         88 YY 88 dP''''Yb d8888 888888     88  Yb `YbodP' 88  Y8 88  Y8 888888 88  Yb            \n"
                  "||==================================================================================================\n"
                  "|| Looks like you need some help. Don't worry, your only goal is to escape the maze. \n"
                  "|| You can move by clicking corresponding letter on keyboard E)ast, S)outh, N)orth, W)est. \n"
@@ -84,7 +84,6 @@ int main()
 
     // game loop
     do {
-        std::cout << "In loop\n";
         // display current status
         currentRoom->displayRoom();
 
@@ -118,8 +117,10 @@ void setupRooms() {
     // 0, 2
     rooms[0][2].westRoom = &rooms[0][1];
     rooms[0][2].southRoom = &rooms[1][2];
+    rooms[0][2].weapon = &weapons[0];
     // 0, 3
     rooms[0][3].eastRoom = &rooms[0][4];
+    rooms[0][3].chest = &chests[1];
     // 0, 4
     rooms[0][4].westRoom = &rooms[0][3];
     rooms[0][4].southRoom = &rooms[1][4];
@@ -212,30 +213,55 @@ Room* performAction(char input) {
         case 'w':
             return currentRoom->westRoom;
         case 'p':
-            // TODO: pickup weapon
-                break;
+            pickupItemInCurrentRoom();
+            break;
         case 'f':
-            // TODO: fight enemy
-                break;
+            fightEnemyInCurrentRoom();
+            break;
         case 'c':
-            // TODO: Open Chest
-                break;
+            openChestInCurrentRoom();
+            break;
     }
 
     // if we pick up weapon, fight enemy, or open chest, we stay in current room.
     return currentRoom;
 }
 
-void pickupItemInCurrentRoom()
-{
+void pickupItemInCurrentRoom() {
     player->addWeapon(currentRoom->weapon);
     std :: cout << "Picked up " << currentRoom -> weapon->getName() << ".\n";
     currentRoom->weapon = nullptr;
 };
-void fightEnemyInCurrentRoom()
-{
-    // TODO
+
+void fightEnemyInCurrentRoom() {
+    // dealDamage returns true if the enemy is alive
+    // in hindsight there should be an EnemyState like PlayerState
+    // but it's okay
+    Enemy *currentEnemy = currentRoom->enemy;
+    player->state = FIGHTING;
+    bool enemyAlive = true;
+
+    while (enemyAlive && player->state == FIGHTING) {
+        // damage enemy
+        enemyAlive = currentEnemy->dealDamage(player->getWeapon()->getDamage());
+        // TODO display message
+        // damage player
+        player->setHealth(player->getHealth() - currentEnemy->getDamage());
+        // TODO display message
+    };
+
+    // if enemy died, add the gold to the player and remove from room
+    if (!enemyAlive) {
+        player->setCoins(player->getCoins() + currentEnemy->getCoins());
+        player->state = IDLE;
+        currentRoom->enemy = nullptr;
+        // TODO display message
+
+    } else if (player->state == DEAD) {
+        // TODO display message
+    }
 };
+
 void openChestInCurrentRoom()
 {
     std::cout << "You opened a "<< currentRoom->chest->getName();
@@ -246,12 +272,12 @@ void openChestInCurrentRoom()
         currentRoom->enemy = &enemies[0];
 
     } else {
-        //remove normal chest
-        currentRoom->chest = nullptr;
         //adds weapon to room
         currentRoom->weapon = &weapons[1];
         //do I have to do something with gold
         player->setCoins(player->getCoins() + currentRoom->chest->getCoins());
+        //remove normal chest
+        currentRoom->chest = nullptr;
     }
 };
 

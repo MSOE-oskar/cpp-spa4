@@ -36,7 +36,7 @@ public:
         if (eastRoom != nullptr) rtn += eastRoom->getRoomHint("east");
         if (southRoom != nullptr) rtn += southRoom->getRoomHint("south");
         if (westRoom != nullptr) rtn += westRoom->getRoomHint("west");
-        if (weapon != nullptr) rtn += "There is a(n) " + weapon->getName() + "in the room\n";
+        if (weapon != nullptr) rtn += "There is a(n) " + weapon->getName() + " in the room\n";
         if (enemy != nullptr) rtn += enemy->getDescription() + "\n";
         if (chest != nullptr) rtn += "There is a chest in the room. \n";
         std::cout << rtn;
@@ -44,12 +44,17 @@ public:
 
     void displayOptions() const {
         std::string rtn = "Press ";
-        if (northRoom != nullptr) rtn += "N)orth, ";
-        if (eastRoom != nullptr) rtn += "E)ast, ";
-        if (southRoom != nullptr) rtn += "S)outh, ";
-        if (westRoom != nullptr) rtn += "W)est, ";
-        if (weapon != nullptr) rtn += "P)ickup weapon, ";
+
+        // if there is an enemy in the room, they can't run away.
         if (enemy != nullptr) rtn += "F)ight enemy, ";
+        else {
+            if (northRoom != nullptr) rtn += "N)orth, ";
+            if (eastRoom != nullptr) rtn += "E)ast, ";
+            if (southRoom != nullptr) rtn += "S)outh, ";
+            if (westRoom != nullptr) rtn += "W)est, ";
+        }
+
+        if (weapon != nullptr) rtn += "P)ickup weapon, ";
         if (chest != nullptr) rtn += "open C)hest, ";
         std::cout << rtn << "or Q)uit.\n";
     }
@@ -75,7 +80,6 @@ public:
         if (this->enemy != nullptr) return "You hear " + enemy->getHint() + " to your " + direction + "\n";
         // no hint
         return "";
-
     }
 };
 
