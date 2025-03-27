@@ -244,10 +244,10 @@ void fightEnemyInCurrentRoom() {
     while (enemyAlive && player->state == FIGHTING) {
         // damage enemy
         enemyAlive = currentEnemy->dealDamage(player->getWeapon()->getDamage());
-        // TODO display message
+        std::cout << "You dealt damage to the " << currentEnemy->getName() << " but the they are not dead yet. Keep fighting.";
         // damage player
         player->setHealth(player->getHealth() - currentEnemy->getDamage());
-        // TODO display message
+        std::cout <<"You got hit - shake it off you can still do this.";
     };
 
     // if enemy died, add the gold to the player and remove from room
@@ -255,10 +255,10 @@ void fightEnemyInCurrentRoom() {
         player->setCoins(player->getCoins() + currentEnemy->getCoins());
         player->state = IDLE;
         currentRoom->enemy = nullptr;
-        // TODO display message
+        std::cout << "You killed the beast, bested them in battle.";
 
     } else if (player->state == DEAD) {
-        // TODO display message
+        std::cout << "You died in battle. The villager cry for you. They still want their freedom";
     }
 };
 
