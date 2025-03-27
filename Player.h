@@ -6,6 +6,8 @@
 #define PLAYER_H
 
 #include "Weapon.h"
+#define MAX_WEAPONS 5
+
 
 enum PlayerState
 {
@@ -24,17 +26,17 @@ public:
     int getHealth();
     void setHealth(int health);
 
-    Weapon getWeapon();
-    void selectWeapon();
-    void addWeapon();
+    Weapon* getWeapon();
+    void selectWeapon(int index);
+    void addWeapon(Weapon *weapon);
 
 private:
     int coins;
     int health;
-    Weapon currentWeapon;
-    std::vector<Weapon> weapons;
+    int weaponCount;
+    Weapon* currentWeapon;
+    Weapon* weapons[MAX_WEAPONS];
 };
-
 
 
 #endif //PLAYER_H
