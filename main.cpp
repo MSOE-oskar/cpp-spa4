@@ -10,8 +10,16 @@
 void setupRooms();
 Room* performAction(char input);
 // Weapon weapons[2] = {};
-// Chest chests[2] = {};
-// Enemy enemies[4] = {};
+Chest chests[2] = {
+
+};
+Enemy enemies[4] = {
+    Enemy("Rats", "A crowd of hungry rats appeared", "sounds of scurrying around", 45, 10,5),
+    Enemy("Rats", "A crowd of hungry rats appeared", "sounds of scurrying around", 45, 10,5),
+    Enemy("Spider", "A giant spider has found you ", "sounds of soft footsteps and scraping", 100, 20,20),
+    Enemy("Spider", "A giant spider has found you ", "sounds of soft footsteps and scraping", 100, 20,20)
+
+};
 //
 // coords: y  x
 Room rooms[5][5] = {

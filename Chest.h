@@ -16,10 +16,25 @@ enum ChestType {
 class Chest : public RoomEntity {
 public:
     // Probably based on the chest type, you set the name, description, and hint.
-    Chest(ChestType type, Weapon containedItem, int coins);
+    Chest(ChestType type, std::string hint, int coins) {
+        if (type == NORMAL) {
+            //normal behavior
+            //this->containedItem = containedItem;
+            this->coins = coins;
+        } else {
+            //trap behavior
+            //this->containedItem = containedItem;
+            this->coins = coins;
+            //spawn rats
+        }
+    } ;
     ChestType type;
-    Weapon getWeapon();
-    int getCoints();
+    Weapon getWeapon() {
+        return containedItem;
+    };
+    int getCoins() {
+        return coins;
+    };
 private:
     Weapon containedItem;
     int coins;
