@@ -60,3 +60,10 @@ void Player::addWeapon(Weapon *weapon) {
     }
 }
 
+void Player::displayWeapons() {
+    std::cout << "Current Weapon Inventory:" << std::endl;
+    for(int i = 0; i < weaponCount; i++){
+        std::cout << "Weapon " << i+1 << ": " << weapons[i] << std::endl;
+    }
+}
+

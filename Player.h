@@ -29,6 +29,7 @@ public:
     Weapon* getWeapon();
     void selectWeapon(int index);
     void addWeapon(Weapon *weapon);
+    void displayWeapons();
 
 private:
     int coins;
