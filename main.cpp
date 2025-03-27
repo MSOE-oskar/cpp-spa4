@@ -14,9 +14,11 @@ void pickupItemInCurrentRoom();
 void fightEnemyInCurrentRoom();
 void openChestInCurrentRoom();
 
-Weapon weapons[2] = {
+Weapon weapons[4] = {
     Weapon("Stick", "A small piece of a tree, with a small carved top, does very little damage", 10),
-    Weapon("Sword", "Crafted with iron from the depths of the forbidden caves", 40),
+    Weapon("Dagger", "Small knife used by ancient ninja masters", 20),
+    Weapon("Sword", "Crafted with iron from the depths of the forbidden caves", 30),
+    Weapon("Magical Wand", "A wand crafted by the almighty Grand Wizard, contains years of magical knowledge", 40)
 };
 
 
