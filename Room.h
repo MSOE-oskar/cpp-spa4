@@ -31,7 +31,7 @@ public:
 
     void displayRoom() const {
         // room description.
-        std::string rtn = description;
+        std::string rtn;
         if (northRoom != nullptr) rtn += northRoom->getRoomHint("north");
         if (eastRoom != nullptr) rtn += eastRoom->getRoomHint("east");
         if (southRoom != nullptr) rtn += southRoom->getRoomHint("south");
@@ -39,6 +39,7 @@ public:
         if (weapon != nullptr) rtn += "There is a(n) " + weapon->getName() + " in the room\n";
         if (enemy != nullptr) rtn += enemy->getDescription() + "\n";
         if (chest != nullptr) rtn += "There is a chest in the room. \n";
+        if (rtn.empty()) rtn += description;
         std::cout << rtn;
     }
 

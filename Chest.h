@@ -20,7 +20,7 @@ public:
     Chest(ChestType type, Weapon *containedWeapon, Enemy *containedEnemy, std::string hint, int coins) {
         this->description = "A golden chest";
         this->hint = hint;
-
+        this->type = type;
         if (type == NORMAL) {
             //normal behavior
             this->name = "Normal Chest";

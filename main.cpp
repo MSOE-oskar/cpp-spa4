@@ -21,19 +21,18 @@ Weapon weapons[4] = {
     Weapon("Magical Wand", "A wand crafted by the almighty Grand Wizard, contains years of magical knowledge", 40)
 };
 
-
-Enemy enemies[5] = {
+Enemy enemies[6] = {
     Enemy("Rats", "A crowd of hungry rats appeared", "sounds of scurrying around", 45, 10,5),
     Enemy("Racoon", "A demon of the night a racoon is here", "sounds of tiny paws around", 45, 10,5),
     Enemy("Possum", "A possum will help you play dead", "sounds of a tail whipping around", 45, 10,5),
     Enemy("Spider", "A giant spider has found you ", "sounds of soft footsteps and scraping", 100, 20,20),
-    Enemy("Spider", "A giant spider has found you ", "sounds of soft footsteps and scraping", 100, 20,20)
-
+    Enemy("Spider", "A giant spider has found you ", "sounds of soft footsteps and scraping", 100, 20,20),
+    Enemy("Rats", "A crowd of hungry rats appeared", "sounds of scurrying around", 45, 10,5),
 };
 Chest chests[3] = {
-    Chest(NORMAL, &weapons[0], nullptr, "Bling sounds of chest",  50),
+    Chest(NORMAL, &weapons[1], nullptr, "Bling sounds of chest",  50),
     Chest(TRAPPED, nullptr, &enemies[0], "Buzz sounds of chest", 0),
-    Chest(TRAPPED, nullptr, &enemies[0], "Buzz sounds of chest", 0)
+    Chest(TRAPPED, nullptr, &enemies[3], "Buzz sounds of chest", 0)
 };
 //
 // coords: y  x
@@ -54,8 +53,6 @@ int main()
     // :D
 
     // game setup
-
-
     std::cout << "||==================================================================================================\n"
                  "||         8b    d8    db    8888P 888888     88''Yb 88   88 88b 88 88b 88 888888 88''Yb            \n"
                  "||         88b  d88   dPYb     dP  88__       88__dP 88   88 88Yb88 88Yb88 88__   88__dP            \n"
@@ -129,6 +126,7 @@ void setupRooms() {
     // 1, 0
     rooms[1][0].southRoom = &rooms[2][0];
     rooms[1][0].eastRoom = &rooms[1][1];
+    rooms[1][0].enemy = &enemies[1];
     // 1, 1
     rooms[1][1].southRoom = &rooms[2][1];
     rooms[1][1].westRoom = &rooms[1][0];
@@ -146,6 +144,7 @@ void setupRooms() {
     // THIRD ROW
     // 2, 0
     rooms[2][0].northRoom = &rooms[1][0];
+    rooms[2][0].weapon = &weapons[2];
     // 2, 1
     rooms[2][1].northRoom = &rooms[1][1];
     rooms[2][1].eastRoom = &rooms[2][2];
@@ -161,6 +160,7 @@ void setupRooms() {
     rooms[2][4].northRoom = &rooms[1][4];
     rooms[2][4].southRoom = &rooms[3][4];
     rooms[2][4].westRoom = &rooms[2][3];
+    rooms[2][4].enemy = &enemies[1];
     //
     // FOURTH ROW
     // 3, 0
@@ -171,6 +171,7 @@ void setupRooms() {
     rooms[3][1].westRoom = &rooms[3][0];
     // 3, 2
     rooms[3][2].eastRoom = &rooms[3][3];
+    rooms[3][2].enemy = &enemies[5];
     // 3, 3
     rooms[3][3].northRoom = &rooms[2][3];
     rooms[3][3].westRoom = &rooms[3][2];
@@ -182,17 +183,21 @@ void setupRooms() {
     // 4, 0
     rooms[4][0].northRoom = &rooms[3][0];
     rooms[4][0].eastRoom = &rooms[4][1];
+
     // 4, 1
     rooms[4][1].eastRoom = &rooms[4][2];
     rooms[4][1].westRoom = &rooms[4][0];
     // 4, 2
     rooms[4][2].westRoom = &rooms[4][1];
+    rooms[4][0].chest = &chests[2];
     // TODO: end room
     // 4, 3
     rooms[4][3].eastRoom = &rooms[4][4];
+    rooms[4][3].weapon = &weapons[3];
     // 4, 4
     rooms[4][4].northRoom = &rooms[3][4];
     rooms[4][4].westRoom = &rooms[4][3];
+    rooms[4][4].enemy = &enemies[4];
 }
 
 Room* performAction(char input) {
@@ -239,41 +244,47 @@ void fightEnemyInCurrentRoom() {
     // but it's okay
     Enemy *currentEnemy = currentRoom->enemy;
     player->state = FIGHTING;
-    bool enemyAlive = true;
+    bool enemyDead = false;
 
-    while (enemyAlive && player->state == FIGHTING) {
+    // if player has no weapon they should die.
+    if (player->getWeapon() == nullptr) {
+        player->state = DEAD;
+    }
+
+    while (!enemyDead && player->state == FIGHTING) {
         // damage enemy
-        enemyAlive = currentEnemy->dealDamage(player->getWeapon()->getDamage());
-        std::cout << "You dealt damage to the " << currentEnemy->getName() << " but the they are not dead yet. Keep fighting.";
-        // damage player
-        player->setHealth(player->getHealth() - currentEnemy->getDamage());
-        std::cout <<"You got hit - shake it off you can still do this.";
+        enemyDead = currentEnemy->dealDamage(player->getWeapon()->getDamage());
+        if (!enemyDead) {
+            std::cout << "You dealt damage to the " << currentEnemy->getName() << " but the they are not dead yet. Keep fighting.\n";
+            // damage player
+            player->setHealth(player->getHealth() - currentEnemy->getDamage());
+            std::cout <<"You got hit - shake it off you can still do this.\n";
+        }
     };
 
     // if enemy died, add the gold to the player and remove from room
-    if (!enemyAlive) {
+    if (enemyDead) {
         player->setCoins(player->getCoins() + currentEnemy->getCoins());
         player->state = IDLE;
         currentRoom->enemy = nullptr;
-        std::cout << "You killed the beast, bested them in battle.";
+        std::cout << "You killed the beast, bested them in battle.\n";
 
     } else if (player->state == DEAD) {
-        std::cout << "You died in battle. The villager cry for you. They still want their freedom";
+        std::cout << "You died in battle. The villager cry for you. They still want their freedom\n";
     }
 };
 
 void openChestInCurrentRoom()
 {
-    std::cout << "You opened a "<< currentRoom->chest->getName();
+    std::cout << "You opened a "<< currentRoom->chest->getName() << "\n";
     if (currentRoom->chest->type == TRAPPED) {
+        //assigns first rat as enemy in room
+        currentRoom->enemy = currentRoom->chest->getEnemy();
         //removes trap chest
         currentRoom->chest = nullptr;
-        //assigns first rat as enemy in room
-        currentRoom->enemy = &enemies[0];
-
     } else {
         //adds weapon to room
-        currentRoom->weapon = &weapons[1];
+        currentRoom->weapon = currentRoom->chest->getWeapon();
         //do I have to do something with gold
         player->setCoins(player->getCoins() + currentRoom->chest->getCoins());
         //remove normal chest
