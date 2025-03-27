@@ -72,12 +72,13 @@ int main()
                  "||==================================================================================================\n";
 
     char input;
-    //player = new Player();
+    player = new Player();
     setupRooms();
     currentRoom = &rooms[0][2];
 
     // game loop
     do {
+        std::cout << "In loop\n";
         // display current status
         currentRoom->displayRoom();
 
@@ -93,7 +94,7 @@ int main()
 
         // update current room
         currentRoom = newRoom;
-    } while (input != 'q' /*&& player->state != DEAD*/);
+    } while (input != 'q' && player->state != DEAD);
 
     return 0;
 }
@@ -104,6 +105,7 @@ void setupRooms() {
     // FIRST ROW
     // 0, 0
     rooms[0][0].eastRoom = &rooms[0][1];
+    rooms[0][0].chest = &chests[0];
     // 0, 1
     rooms[0][1].westRoom = &rooms[0][0];
     rooms[0][1].eastRoom = &rooms[0][2];
