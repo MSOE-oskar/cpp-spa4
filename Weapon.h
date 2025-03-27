@@ -19,6 +19,10 @@ public:
         return damage;
     }
 
+    std::string getName() {
+        return name;
+    }
+
 private:
     int damage;
 };
