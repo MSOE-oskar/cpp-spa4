@@ -5,9 +5,9 @@
 
 Player::Player() {
     this->coins = 0;
-    this-> health = 100;
+    this->health = 100;
     this->state = IDLE;
-    this-> weaponCount = 0;
+    this->weaponCount = 0;
     this->currentWeapon = nullptr;
 
     for (int i = 0; i < MAX_WEAPONS; ++i) {

@@ -14,7 +14,7 @@ public:
     std::string getName();
     std::string getDescription();
     std::string getHint();
-private:
+protected:
     std::string hint = "";
     std::string name = "";
     std::string description = "";
