@@ -57,11 +57,11 @@ public:
 
         if (weapon != nullptr) rtn += "P)ickup weapon, ";
         if (chest != nullptr) rtn += "open C)hest, ";
-        std::cout << rtn << "V)iew weapons, seL)ect weapon, or Q)uit.\n";
+        std::cout << rtn << "V)iew weapons, seL)ect weapon, view M)ap, or Q)uit.\n";
     }
 
     std::string getOptions() const {
-        std::string rtn = "qvl"; // quit, inventory, select item is always an option.
+        std::string rtn = "qvlm"; // quit, inventory, select item is always an option.
         if (enemy != nullptr) rtn += "f";
         else
         {
@@ -84,6 +84,13 @@ public:
         if (this->enemy != nullptr) return "You hear " + enemy->getHint() + " to your " + direction + "\n";
         // no hint
         return "";
+    }
+
+    char getIcon() const {
+        if (enemy != nullptr) return '?';
+        if (weapon != nullptr) return '^';
+        if (chest != nullptr) return '$';
+        return '.';
     }
 };
 

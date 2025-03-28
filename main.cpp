@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <format>
 #include "Room.h"
 #include "Player.h"
 
@@ -13,6 +14,7 @@ void pickupItemInCurrentRoom();
 void fightEnemyInCurrentRoom();
 void openChestInCurrentRoom();
 void selectWeapon();
+void displayMap();
 
 Weapon weapons[4] = {
     Weapon("Stick", "A small piece of a tree, with a small carved top, does very little damage", 10),
@@ -106,12 +108,12 @@ int main()
     // end states
     if (currentRoom == &endRoom) {
         // good ending
-        std::cout << "You're the bravest of the land!\n";
-        std::cout << "The villagers are counting on you. Would you like to buy their freedom? (Y/n)\n";
+        std::cout << "You've escaped the dangerous maze. You're the bravest of the land!\n";
+        std::cout << "The villagers are counting on you. Would you like to save them? (Y/n)\n";
         char freedomInput ;
         std::cin >> freedomInput;
         freedomInput = std::tolower(freedomInput);
-        while (freedomInput != 'y' || freedomInput != 'n')
+        while (freedomInput != 'y' && freedomInput != 'n')
         {
             std::cout << "Invalid input! \n";
             std::cin >> freedomInput;
@@ -121,6 +123,15 @@ int main()
         if (freedomInput == 'n')
         {
             std::cout << "The villagers cry for you. GAME OVER!\n";
+        } else
+        {
+            if (player->getCoins() >= 80)
+            {
+                std::cout << "The villagers rejoice in freedom! Congratulations!\n";
+            }else
+            {
+                std::cout << "You don't have enough coins to save the villagers. At least you escaped!\n";
+            }
         }
     }
     return 0;
@@ -259,6 +270,9 @@ Room* performAction(char input) {
         case 'l':
             selectWeapon();
             break;
+        case 'm':
+            displayMap();
+            break;
     }
 
     // if we pick up weapon, fight enemy, or open chest, we stay in current room.
@@ -306,8 +320,7 @@ void fightEnemyInCurrentRoom() {
     }
 };
 
-void openChestInCurrentRoom()
-{
+void openChestInCurrentRoom() {
     std::cout << "You opened a "<< currentRoom->chest->getName() << "\n";
     if (currentRoom->chest->type == TRAPPED) {
         //assigns first rat as enemy in room
@@ -331,5 +344,23 @@ void selectWeapon() {
     player->selectWeapon(index);
 }
 
+void displayMap() {
+    for (int y = 0; y < 5; y++)
+    {
+        for (int x = 0; x < 5; x++)
+        {
+            const Room *tempRoom = &rooms[y][x];
+            char icon = tempRoom->getIcon();
+            // display player icon in current room
+            if (tempRoom == currentRoom) icon = '!';
 
+            std::string str;
+            str = icon;
 
+            std::cout << str + " ";
+        }
+        std::cout << "\n";
+    }
+    std::cout << "LEGEND: \n"
+                 "! = Player | ? = Enemy | ^ = Weapon | $ = Chest\n";
+}
