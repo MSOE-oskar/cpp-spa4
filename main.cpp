@@ -3,7 +3,6 @@
 //
 
 #include <iostream>
-#include <vector>
 #include "Room.h"
 #include "Player.h"
 
@@ -13,6 +12,7 @@ Room* performAction(char input);
 void pickupItemInCurrentRoom();
 void fightEnemyInCurrentRoom();
 void openChestInCurrentRoom();
+void selectWeapon();
 
 Weapon weapons[4] = {
     Weapon("Stick", "A small piece of a tree, with a small carved top, does very little damage", 10),
@@ -43,6 +43,8 @@ Room rooms[5][5] = {
     {Room(), Room(), Room(), Room(), Room()},
     {Room(), Room(), Room(), Room(), Room()}
 };
+Room startRoom = Room(), endRoom = Room();
+
 Room *currentRoom = nullptr;
 Player *player;
 
@@ -61,15 +63,18 @@ int main()
                  "||==================================================================================================\n"
                  "|| Looks like you need some help. Don't worry, your only goal is to escape the maze. \n"
                  "|| You can move by clicking corresponding letter on keyboard E)ast, S)outh, N)orth, W)est. \n"
-                 "|| In the maze there are a few dangers you need to be aware of. \n"
+                 "|| If a weapon is near you there will be an option to P)ick it up. \n"
+                 "||\n"
+                 "|| In the maze there are a few dangers you need to be aware of: \n"
                  "|| The maze is littered with GIANT spiders that want to eat you, \n"
                  "|| they have soft footsteps and make a scraping sound as they walk. \n"
                  "|| If you encounter one you must fight them with a weapon or else succumb to their attacks. \n"
-                 "|| If a weapon is near you there will be an option to P)ick it up. \n"
+                 "||\n"
                  "|| Crowds of rats are another danger you can hear them scurrying around. \n"
                  "|| A racoon might appear you can hear their tiny paws. \n"
                  "|| A possum can also show up but its tail whipping gives it away. \n"
                  "|| They won't kill you right away, but they will cause you to lose health. \n"
+                 "||\n"
                  "|| There are chests in the maze that can give you gold (bling sound) \n"
                  "|| but be careful a chest can also be a trap chest (buzz sound) that will spawn in a crowd of rats. \n"
                  "||==================================================================================================\n";
@@ -77,7 +82,7 @@ int main()
     char input;
     player = new Player();
     setupRooms();
-    currentRoom = &rooms[0][2];
+    currentRoom = &startRoom;
 
     // game loop
     do {
@@ -96,13 +101,23 @@ int main()
 
         // update current room
         currentRoom = newRoom;
-    } while (input != 'q' && player->state != DEAD);
+    } while (input != 'q' && player->state != DEAD && currentRoom != &endRoom);
+
+    // end states
+    if (currentRoom == &endRoom) {
+        // good ending
+        std::cout << "You win!";
+        // bad ending
+
+    }
 
     return 0;
 }
 
 // assign items to rooms randomly, for the start of the game
 void setupRooms() {
+    startRoom.southRoom = &rooms[0][2];
+    startRoom.description = "You are at the entrance to the labyrinth. Once you go in, you cannot come back out.\n";
     //
     // FIRST ROW
     // 0, 0
@@ -126,7 +141,7 @@ void setupRooms() {
     // 1, 0
     rooms[1][0].southRoom = &rooms[2][0];
     rooms[1][0].eastRoom = &rooms[1][1];
-    rooms[1][0].enemy = &enemies[1];
+    rooms[1][0].enemy = &enemies[2];
     // 1, 1
     rooms[1][1].southRoom = &rooms[2][1];
     rooms[1][1].westRoom = &rooms[1][0];
@@ -189,8 +204,8 @@ void setupRooms() {
     rooms[4][1].westRoom = &rooms[4][0];
     // 4, 2
     rooms[4][2].westRoom = &rooms[4][1];
-    rooms[4][0].chest = &chests[2];
-    // TODO: end room
+    rooms[4][2].chest = &chests[2];
+    rooms[4][2].southRoom = &endRoom;
     // 4, 3
     rooms[4][3].eastRoom = &rooms[4][4];
     rooms[4][3].weapon = &weapons[3];
@@ -226,6 +241,12 @@ Room* performAction(char input) {
         case 'c':
             openChestInCurrentRoom();
             break;
+        case 'v':
+            player->displayWeapons();
+            break;
+        case 'l':
+            selectWeapon();
+            break;
     }
 
     // if we pick up weapon, fight enemy, or open chest, we stay in current room.
@@ -233,14 +254,14 @@ Room* performAction(char input) {
 }
 
 void pickupItemInCurrentRoom() {
-    player->addWeapon(currentRoom->weapon);
     std :: cout << "Picked up " << currentRoom -> weapon->getName() << ".\n";
+    player->addWeapon(currentRoom->weapon);
     currentRoom->weapon = nullptr;
 };
 
 void fightEnemyInCurrentRoom() {
     // dealDamage returns true if the enemy is alive
-    // in hindsight there should be an EnemyState like PlayerState
+    // in hindsight there should be an EnemyState like PlayerState,
     // but it's okay
     Enemy *currentEnemy = currentRoom->enemy;
     player->state = FIGHTING;
@@ -267,10 +288,9 @@ void fightEnemyInCurrentRoom() {
         player->setCoins(player->getCoins() + currentEnemy->getCoins());
         player->state = IDLE;
         currentRoom->enemy = nullptr;
-        std::cout << "You killed the beast, bested them in battle.\n";
-
+        std::cout << "You killed the beast, bested them in battle. You have " << player->getHealth() << " health points remaining.\n";
     } else if (player->state == DEAD) {
-        std::cout << "You died in battle. The villager cry for you. They still want their freedom\n";
+        std::cout << "You died in battle. The villagers cry for you. They still want their freedom!\n";
     }
 };
 
@@ -291,5 +311,13 @@ void openChestInCurrentRoom()
         currentRoom->chest = nullptr;
     }
 };
+
+void selectWeapon() {
+    int index;
+    std::cout << "Enter a weapon number: ";
+    std::cin >> index;
+    player->selectWeapon(index);
+}
+
 
 

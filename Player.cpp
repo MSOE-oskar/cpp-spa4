@@ -39,12 +39,13 @@ Weapon* Player::getWeapon() {
 }
 
 void Player::selectWeapon(int index){
-    if (index >= 0 && index < weaponCount) {
-        currentWeapon = weapons[index];
+    // indexed like this since the player enters 1 for the first weapon.
+    if (index >= 1 && index <= weaponCount) {
+        currentWeapon = weapons[index - 1];
         std::cout << "Weapon selected: " << currentWeapon->getName()
                   << " (Damage: " << currentWeapon->getDamage() << ")" << std::endl;
     } else {
-        std::cerr << "Invalid weapon index! Choose between 0 and " << weaponCount - 1 << "." << std::endl;
+        std::cerr << "Invalid weapon index! Choose between 1 and " << weaponCount << "." << std::endl;
     }
 }
 
@@ -61,9 +62,15 @@ void Player::addWeapon(Weapon *weapon) {
 }
 
 void Player::displayWeapons() {
-    std::cout << "Current Weapon Inventory:" << std::endl;
+    if (weaponCount == 0) {
+        std::cout << "You have no weapons!" << std::endl;
+        return;
+    }
+
+    std::cout << "Current Weapon Inventory: " << std::endl;
+    // print weapon names and description
     for(int i = 0; i < weaponCount; i++){
-        std::cout << "Weapon " << i+1 << ": " << weapons[i] << std::endl;
+        std::cout << "Weapon " << i+1 << ": " << weapons[i]->getName() << ": " << weapons[i]->getDescription() << std::endl;
     }
 }
 

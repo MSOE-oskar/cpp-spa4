@@ -57,17 +57,20 @@ public:
 
         if (weapon != nullptr) rtn += "P)ickup weapon, ";
         if (chest != nullptr) rtn += "open C)hest, ";
-        std::cout << rtn << "or Q)uit.\n";
+        std::cout << rtn << "V)iew weapons, seL)ect weapon, or Q)uit.\n";
     }
 
     std::string getOptions() const {
-        std::string rtn = "q"; // quit is always an option.
-        if (northRoom != nullptr) rtn += "n";
-        if (eastRoom != nullptr) rtn += "e";
-        if (southRoom != nullptr) rtn += "s";
-        if (westRoom != nullptr) rtn += "w";
-        if (weapon != nullptr) rtn += "p";
+        std::string rtn = "qvl"; // quit, inventory, select item is always an option.
         if (enemy != nullptr) rtn += "f";
+        else
+        {
+            if (northRoom != nullptr) rtn += "n";
+            if (eastRoom != nullptr) rtn += "e";
+            if (southRoom != nullptr) rtn += "s";
+            if (westRoom != nullptr) rtn += "w";
+        }
+        if (weapon != nullptr) rtn += "p";
         if (chest != nullptr) rtn += "c";
 
         return rtn;
