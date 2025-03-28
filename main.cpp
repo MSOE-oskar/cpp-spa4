@@ -106,11 +106,23 @@ int main()
     // end states
     if (currentRoom == &endRoom) {
         // good ending
-        std::cout << "You win!";
-        // bad ending
+        std::cout << "You're the bravest of the land!\n";
+        std::cout << "The villagers are counting on you. Would you like to buy their freedom? (Y/n)\n";
+        char freedomInput ;
+        std::cin >> freedomInput;
+        freedomInput = std::tolower(freedomInput);
+        while (freedomInput != 'y' || freedomInput != 'n')
+        {
+            std::cout << "Invalid input! \n";
+            std::cin >> freedomInput;
+            freedomInput = std::tolower(freedomInput);
+        }
 
+        if (freedomInput == 'n')
+        {
+            std::cout << "The villagers cry for you. GAME OVER!\n";
+        }
     }
-
     return 0;
 }
 
